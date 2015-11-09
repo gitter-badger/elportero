@@ -1,0 +1,11 @@
+server:
+  applicationConnectors:
+  - type: http
+    port: 2760
+  adminConnectors:
+  - type: http
+    port: 2761
+
+authenticator:
+  factory: org.bitionaire.elportero.auth.BasicAuthenticatorFactory
+  properties: src/main/config/authentication.properties
