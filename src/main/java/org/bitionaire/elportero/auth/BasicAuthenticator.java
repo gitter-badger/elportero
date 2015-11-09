@@ -7,14 +7,23 @@ import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
 import io.dropwizard.auth.basic.BasicCredentials;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
 @Slf4j
-public class BasicAuthenticator implements ApiClientAuthenticator<BasicCredentials, ApiClient, BasicAuthenticatorFactory> {
+public class BasicAuthenticator implements ApiClientAuthenticator<BasicCredentials, ApiClient> {
 
     private final Properties authProperties = new Properties();
+
+    public BasicAuthenticator(final File authPropertiesFile) {
+        try (final FileInputStream fileInputStream = new FileInputStream(authPropertiesFile)) {
+            this.authProperties.load(fileInputStream);
+        } catch (final IOException e) {
+            log.error("failed to initialize auth properties", e);
+        }
+    }
 
     @Override
     public AuthFilter getAuthFilter() {
@@ -22,15 +31,6 @@ public class BasicAuthenticator implements ApiClientAuthenticator<BasicCredentia
                 .setAuthenticator(this)
                 .setPrefix(BasicAuthenticator.class.getSimpleName())
                 .buildAuthFilter();
-    }
-
-    @Override
-    public void initialize(final BasicAuthenticatorFactory configuration) {
-        try (final FileInputStream fileInputStream = new FileInputStream(configuration.getAuthProperties())) {
-            this.authProperties.load(fileInputStream);
-        } catch (final IOException e) {
-            log.error("failed to initialize auth properties", e);
-        }
     }
 
     @Override

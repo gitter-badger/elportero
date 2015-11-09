@@ -8,7 +8,7 @@ RESTful authentication service.
 Probably will be paired with [Kong](https://github.com/Mashape/kong) as an API gateway. This service will ...
 
 1. Authenticate users in an existing environment (e.g. LDAP) with an easy plugin architecture
-2. Create a consumer in Kong for the authenticated user and return a created token
+2. Create a _Kong_ consumer and return a JWT within the response that will be used for requests to other services
 
 ## Run
 
@@ -19,3 +19,11 @@ Probably will be paired with [Kong](https://github.com/Mashape/kong) as an API g
    sh $ gradle run
    ```
 4. Use API URL `http://localhost:2760/`
+
+## Custom authenticator
+
+Implement an `org.bitionaire.elportero.auth.ApiClientAuthenticatorFactory` and add it to the classpath of this service.
+The factory can be used for configuration of an `org.bitionaire.elportero.auth.ApiClientAuthenticator`.
+It's properties will be automatically bound in the `authenticator` property of `ElPorteroConfiguration` once the full qualified
+class name was specified in `factory`. That may sound confusing ... that's why I've added an example implementation.
+Search for `BasicAuthenticatorFactory` and have a look at the configuration file `dev.yml` in `src/main/config`.

@@ -5,13 +5,13 @@ import lombok.Getter;
 
 import java.io.File;
 
-public class BasicAuthenticatorFactory extends ApiClientAuthenticatorFactory {
+public class BasicAuthenticatorFactory implements ApiClientAuthenticatorFactory<BasicAuthenticator> {
 
     @JsonProperty("properties")
     @Getter private File authProperties;
 
     @Override
-    public Class getAuthenticatorClass() {
-        return BasicAuthenticator.class;
+    public BasicAuthenticator initialize() {
+        return new BasicAuthenticator(authProperties);
     }
 }
