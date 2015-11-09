@@ -1,7 +1,7 @@
 # El Portero
 
-[![Build Status](https://travis-ci.org/el-bombillo/hombres.svg?branch=master)](https://travis-ci.org/el-bombillo/hombres)
-[![codecov.io](https://codecov.io/github/el-bombillo/hombres/coverage.svg?branch=master)](https://codecov.io/github/el-bombillo/hombres?branch=master)
+[![Build Status](https://travis-ci.org/el-bombillo/elportero.svg?branch=master)](https://travis-ci.org/el-bombillo/elportero)
+[![codecov.io](https://codecov.io/github/el-bombillo/elportero/coverage.svg?branch=master)](https://codecov.io/github/el-bombillo/elportero?branch=master)
 
 RESTful authentication service. 
 
