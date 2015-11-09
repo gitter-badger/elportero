@@ -6,6 +6,15 @@ server:
   - type: http
     port: 2761
 
+kong: http://localhost:8001/
+httpClient:
+  minThreads: 1
+  maxThreads: 128
+  workQueueSize: 8
+  gzipEnabled: true
+  gzipEnabledForRequests: true
+  chunkedEncodingEnabled: true
+
 authenticator:
   factory: org.bitionaire.elportero.auth.BasicAuthenticatorFactory
   properties: src/main/config/authentication.properties
