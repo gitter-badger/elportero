@@ -1,4 +1,4 @@
-package org.bitionaire.elportero.gateway;
+package org.bitionaire.elportero.gateway.kong;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

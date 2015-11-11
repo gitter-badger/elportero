@@ -41,7 +41,79 @@ public class TokensResourceTest {
     }
 
     @Test
-    public void testSuccessfulLogin() throws Exception {
+    public void testSuccessfulLoginForExistingUser() throws Exception {
+        mockServer.when(
+                request()
+                        .withMethod("GET")
+                        .withPath("/consumers/bitionaire"),
+                exactly(1)
+        ).respond(
+                response()
+                        .withStatusCode(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("{" +
+                                "    \"id\": \"4d924084-1adb-40a5-c042-63b19db421d1\"," +
+                                "    \"custom_id\": \"bitionaire\"," +
+                                "    \"created_at\": 1422386534" +
+                                "}"
+                        )
+        );
+
+        mockTokenRequest();
+
+        given()
+                .port(RULE.getLocalPort())
+                .auth().basic("bitionaire", "secret123")
+        .when()
+                .post("/tokens")
+        .then().assertThat()
+                .statusCode(200)
+                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhMzZjMzA0OWIzNjI0OWEzYzlmODg5MWNiMTI3MjQzYyJ9.5uUYhXpZ1H8tpWSmVqC3JPCiJCxB2aqL5PHGX_0jlOA");
+    }
+
+    @Test
+    public void testSuccessfulLoginForNonExistingUser() throws Exception {
+        mockServer.when(
+                request()
+                        .withMethod("GET")
+                        .withPath("/consumers/bitionaire"),
+                exactly(1)
+        ).respond(
+                response()
+                        .withStatusCode(404)
+        );
+
+        mockServer.when(
+                request()
+                        .withMethod("POST")
+                        .withHeader("Content-Type", "application/json")
+                        .withPath("/consumers/bitionaire"),
+                exactly(1)
+        ).respond(
+                response()
+                        .withStatusCode(201)
+                        .withBody("{" +
+                                "    \"id\": \"4d924084-1adb-40a5-c042-63b19db421d1\"," +
+                                "    \"custom_id\": \"bitionaire\"," +
+                                "    \"created_at\": 1422386534" +
+                                "}"
+                        )
+        );
+
+        mockTokenRequest();
+
+        given()
+                .port(RULE.getLocalPort())
+                .auth().basic("bitionaire", "secret123")
+        .when()
+                .post("/tokens")
+        .then().assertThat()
+                .statusCode(200)
+                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhMzZjMzA0OWIzNjI0OWEzYzlmODg5MWNiMTI3MjQzYyJ9.5uUYhXpZ1H8tpWSmVqC3JPCiJCxB2aqL5PHGX_0jlOA");
+
+    }
+
+    private void mockTokenRequest() {
         mockServer.when(
                 request()
                         .withMethod("POST")
@@ -60,15 +132,6 @@ public class TokensResourceTest {
                                 "}"
                         )
         );
-
-        given()
-                .port(RULE.getLocalPort())
-                .auth().basic("bitionaire", "secret123")
-        .when()
-                .post("/tokens")
-        .then().assertThat()
-                .statusCode(200)
-                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhMzZjMzA0OWIzNjI0OWEzYzlmODg5MWNiMTI3MjQzYyJ9.5uUYhXpZ1H8tpWSmVqC3JPCiJCxB2aqL5PHGX_0jlOA");
     }
 
     @Test
