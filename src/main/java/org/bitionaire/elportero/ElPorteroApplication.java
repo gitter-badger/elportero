@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bitionaire.elportero.auth.ApiClient;
 import org.bitionaire.elportero.auth.ApiClientAuthenticator;
 import org.bitionaire.elportero.auth.ApiClientAuthenticatorFactory;
-import org.bitionaire.elportero.gateway.KongApiGateway;
+import org.bitionaire.elportero.gateway.kong.KongApiGateway;
 import org.bitionaire.elportero.resources.TokensResource;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 

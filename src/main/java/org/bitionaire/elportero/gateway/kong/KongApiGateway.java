@@ -1,9 +1,12 @@
-package org.bitionaire.elportero.gateway;
+package org.bitionaire.elportero.gateway.kong;
 
 import com.auth0.jwt.Algorithm;
 import com.auth0.jwt.JWTSigner;
 import lombok.extern.slf4j.Slf4j;
 import org.bitionaire.elportero.auth.ApiClient;
+import org.bitionaire.elportero.gateway.ApiGateway;
+import org.bitionaire.elportero.gateway.ApiToken;
+import org.bitionaire.elportero.gateway.BearerApiToken;
 import org.bitionaire.elportero.gateway.kong.CreateConsumerRequest;
 import org.bitionaire.elportero.gateway.kong.JwtPostResponse;
 
@@ -16,6 +19,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 public class KongApiGateway implements ApiGateway {
@@ -34,7 +38,7 @@ public class KongApiGateway implements ApiGateway {
     }
 
     @Override
-    public Response allowAccess(final ApiClient client) {
+    public Optional<ApiToken> allowAccess(final ApiClient client) {
         if (clientExists(client) || added(client)) {
             final JwtPostResponse jwtPostResponse = httpClient
                     .target(baseUrl)
@@ -48,10 +52,10 @@ public class KongApiGateway implements ApiGateway {
             }};
             final String jwt = jwtSigner.sign(claims, new JWTSigner.Options().setAlgorithm(Algorithm.HS256));
 
-            return Response.ok().header("Authorization", String.format("Bearer %s", jwt)).build();
+            return Optional.of(new BearerApiToken(jwt));
         }
         log.error("client {} does not exist and could not be created", client);
-        return Response.serverError().build();
+        return Optional.empty();
     }
 
     private boolean clientExists(final ApiClient client) {

@@ -1,5 +1,6 @@
 package org.bitionaire.elportero.resources;
 
+import com.jayway.restassured.http.ContentType;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.bitionaire.elportero.ElPorteroApplication;
 import org.bitionaire.elportero.ElPorteroConfiguration;
@@ -19,6 +20,7 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 import static org.mockserver.matchers.Times.exactly;
+import static org.hamcrest.Matchers.*;
 
 public class TokensResourceTest {
 
@@ -60,15 +62,7 @@ public class TokensResourceTest {
         );
 
         mockTokenRequest();
-
-        given()
-                .port(RULE.getLocalPort())
-                .auth().basic("bitionaire", "secret123")
-        .when()
-                .post("/tokens")
-        .then().assertThat()
-                .statusCode(200)
-                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhMzZjMzA0OWIzNjI0OWEzYzlmODg5MWNiMTI3MjQzYyJ9.5uUYhXpZ1H8tpWSmVqC3JPCiJCxB2aqL5PHGX_0jlOA");
+        verifyToken();
     }
 
     @Test
@@ -101,16 +95,19 @@ public class TokensResourceTest {
         );
 
         mockTokenRequest();
+        verifyToken();
+    }
 
+    public void verifyToken() {
         given()
                 .port(RULE.getLocalPort())
                 .auth().basic("bitionaire", "secret123")
+                .accept(ContentType.JSON)
         .when()
                 .post("/tokens")
         .then().assertThat()
-                .statusCode(200)
-                .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhMzZjMzA0OWIzNjI0OWEzYzlmODg5MWNiMTI3MjQzYyJ9.5uUYhXpZ1H8tpWSmVqC3JPCiJCxB2aqL5PHGX_0jlOA");
-
+                .statusCode(201)
+                .body("bearer", is(equalTo("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhMzZjMzA0OWIzNjI0OWEzYzlmODg5MWNiMTI3MjQzYyJ9.5uUYhXpZ1H8tpWSmVqC3JPCiJCxB2aqL5PHGX_0jlOA")));
     }
 
     private void mockTokenRequest() {
