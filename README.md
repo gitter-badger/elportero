@@ -1,5 +1,7 @@
 # El Portero
 
+[![Join the chat at https://gitter.im/el-bombillo/elportero](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/el-bombillo/elportero?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/el-bombillo/elportero.svg?branch=master)](https://travis-ci.org/el-bombillo/elportero)
 [![codecov.io](https://codecov.io/github/el-bombillo/elportero/coverage.svg?branch=master)](https://codecov.io/github/el-bombillo/elportero?branch=master)
 
