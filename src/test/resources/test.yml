@@ -1,0 +1,11 @@
+kong: http://localhost:1080/
+httpClient:
+  minThreads: 1
+  maxThreads: 128
+  workQueueSize: 8
+  gzipEnabled: true
+  gzipEnabledForRequests: true
+  chunkedEncodingEnabled: true
+
+authenticator:
+  factory: org.bitionaire.elportero.auth.TestAuthenticatorFactory

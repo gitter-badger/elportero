@@ -34,6 +34,8 @@ dependencies {
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'io.dropwizard', name: 'dropwizard-testing', version: '0.9.1'
+    testCompile group: 'com.jayway.restassured', name: 'rest-assured', version: '2.7.0'
+    testCompile group: 'org.mock-server', name: 'mockserver-netty', version: '3.10.2'
 }
 
 jacocoTestReport {
@@ -45,5 +47,6 @@ jacocoTestReport {
 check.dependsOn jacocoTestReport
 
 run {
+    workingDir project.projectDir
     args "server", "${project.projectDir}/src/main/config/dev.yml"
 }

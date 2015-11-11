@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bitionaire.elportero.auth.ApiClient;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -28,7 +29,8 @@ public class KongApiGateway implements ApiGateway {
         try {
             final JwtPostResponse jwtPostResponse = httpClient
                     .target(baseUrl.toURI())
-                    .path(String.format("/consumers/%s/jwt", client.getId())).request()
+                    .path(String.format("/consumers/%s/jwt", client.getId()))
+                    .request(MediaType.APPLICATION_JSON_TYPE)
                     .post(null, JwtPostResponse.class);
 
             final JWTSigner jwtSigner = new JWTSigner(jwtPostResponse.getSecret());

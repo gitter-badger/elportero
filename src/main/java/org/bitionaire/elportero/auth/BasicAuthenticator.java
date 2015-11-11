@@ -20,6 +20,7 @@ public class BasicAuthenticator implements ApiClientAuthenticator<BasicCredentia
     public BasicAuthenticator(final File authPropertiesFile) {
         try (final FileInputStream fileInputStream = new FileInputStream(authPropertiesFile)) {
             this.authProperties.load(fileInputStream);
+            log.info("auth properties loaded from file {}", authPropertiesFile.getAbsolutePath());
         } catch (final IOException e) {
             log.error("failed to initialize auth properties", e);
         }
@@ -29,7 +30,8 @@ public class BasicAuthenticator implements ApiClientAuthenticator<BasicCredentia
     public AuthFilter getAuthFilter() {
         return new BasicCredentialAuthFilter.Builder<ApiClient>()
                 .setAuthenticator(this)
-                .setPrefix(BasicAuthenticator.class.getSimpleName())
+                .setAuthorizer((principal, role) -> true)
+                .setRealm(BasicAuthenticator.class.getSimpleName())
                 .buildAuthFilter();
     }
 
